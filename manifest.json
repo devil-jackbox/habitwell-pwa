@@ -1,0 +1,22 @@
+{
+  "name": "HabitWell OS",
+  "short_name": "HabitWell",
+  "description": "Your Habit Tracking App",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FAFAF5",
+  "theme_color": "#FFE500",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://YOUR-ICON-URL/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://YOUR-ICON-URL/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
