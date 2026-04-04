@@ -1,0 +1,30 @@
+on:
+  schedule:
+    - cron: '0 * * * *'  # runs every hour, on the hour
+
+jobs:
+  send-notifications:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send push to users scheduled for this UTC hour
+        run: |
+          HOUR=$(date -u +%-H)   # current UTC hour, no leading zero (0-23)
+          echo "Sending to users with notif_utc_hour = $HOUR"
+
+          RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" \
+            -X POST https://onesignal.com/api/v1/notifications \
+            -H "Authorization: Basic ${{ secrets.ONESIGNAL_REST_KEY }}" \
+            -H "Content-Type: application/json" \
+            -d "{
+              \"app_id\": \"${{ secrets.ONESIGNAL_APP_ID }}\",
+              \"filters\": [
+                {\"field\": \"tag\", \"key\": \"reminders\",      \"relation\": \"=\", \"value\": \"true\"},
+                {\"field\": \"tag\", \"key\": \"notif_utc_hour\", \"relation\": \"=\", \"value\": \"$HOUR\"}
+              ],
+              \"headings\": {\"en\": \"HabitWell OS ✅\"},
+              \"contents\": {\"en\": \"Time to log your habits & vitals for today!\"},
+              \"url\": \"https://devil-jackbox.github.io/habitwell-pwa/\",
+              \"chrome_web_icon\": \"https://devil-jackbox.github.io/habitwell-pwa/icons/icon-192.png\"
+            }")
+
+          echo "OneSignal response code: $RESPONSE"
