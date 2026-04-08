@@ -49,9 +49,12 @@ async function sendReminders() {
 
     // Skip if this user's preferred hour doesn't match current UTC hour
     // (unless we're in test mode)
-    if (!TEST_UID && preferredHour !== currentUTCHour) {
-      results.skipped++;
-      return;
+    const currentUTCDay  = new Date().getUTCDay(); // 0=Sun … 6=Sat
+    const reminderDays   = data.reminderDays ?? [0,1,2,3,4,5,6]; // default: every day
+
+    if (!TEST_UID) {
+      if (preferredHour !== currentUTCHour) { results.skipped++; return; }
+      if (!reminderDays.includes(currentUTCDay)) { results.skipped++; return; }
     }
 
     if (!token) {
