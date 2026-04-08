@@ -1,0 +1,36 @@
+on:
+  schedule:
+    # Runs every hour — the script filters by user's preferred reminder time
+    - cron: '0 * * * *'
+  
+  # Lets you manually trigger from GitHub → Actions tab (great for testing)
+  workflow_dispatch:
+    inputs:
+      test_uid:
+        description: 'Send to specific user UID only (leave blank for all)'
+        required: false
+        default: ''
+
+jobs:
+  send-notifications:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: |
+          cd scripts
+          npm install firebase-admin
+
+      - name: Send push notifications
+        run: node scripts/send-push.js
+        env:
+          FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          TEST_UID: ${{ github.event.inputs.test_uid }}
