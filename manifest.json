@@ -9,12 +9,12 @@
   "orientation": "portrait",
   "icons": [
     {
-      "src": "https://devil-jackbox.github.io/habitwell-pwa/icon-192.png",
+      "src": "https://devil-jackbox.github.io/habitwell-pwa/logo.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "https://devil-jackbox.github.io/habitwell-pwa/icon-512.png",
+      "src": "https://devil-jackbox.github.io/habitwell-pwa/logo.png",
       "sizes": "512x512",
       "type": "image/png"
     }
